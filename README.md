@@ -2,7 +2,13 @@
 
 - Create React App
 - Configure TailwindCSS
-<br><br>
+- HomePage
+- Header & Footer
+- Routing of App
+- Login Page (lazy load)
+- Sign up Form
+- Form Validation
+  <br><br>
 
 # Features
 

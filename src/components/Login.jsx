@@ -1,11 +1,18 @@
+import { useRef, useState } from "react";
+// Components
 import Header from "./Header";
-import { NETFLIX_BACKGROUND } from "../utils/constant";
-import { useState } from "react";
 import Footer from "./Footer";
+// Utils
+import checkValidData from "../utils/validate";
+import { NETFLIX_BACKGROUND } from "../utils/constant";
 
 const Login = () => {
   const [isSignInForm, setisSignInForm] = useState(true);
   const [showPassword, setshowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const fullName = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
 
   const handleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -13,6 +20,18 @@ const Login = () => {
   const handleClick = () => {
     setisSignInForm(!isSignInForm);
   };
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    const error = checkValidData(
+      fullName?.current?.value,
+      email.current.value,
+      password.current.value
+    );
+    if (error) setErrorMessage(error.message);
+    else setErrorMessage(null);
+  };
+
   return (
     <div>
       <Header />
@@ -30,17 +49,20 @@ const Login = () => {
         {!isSignInForm && (
           <input
             type="text"
+            ref={fullName}
             placeholder="Full Name"
             className="p-4 rounded-md bg-black/60 border border-gray-500 focus:border-2 text-white focus:border-white focus:outline-none"
           />
         )}
         <input
           type="email"
+          ref={email}
           placeholder="Email Address"
           className="p-4 mt-4 rounded-md bg-black/60 border border-gray-500 focus:border-2 text-white focus:border-white focus:outline-none"
         />
         <input
           type={showPassword ? "text" : "password"}
+          ref={password}
           placeholder="Password"
           className="p-4 mt-4 rounded-md bg-black/60 border border-gray-500 focus:border-2 text-white focus:border-white focus:outline-none"
         />
@@ -50,7 +72,11 @@ const Login = () => {
         >
           {showPassword ? "Hide" : "Show"} Password
         </p>
-        <button className="bg-[#E50914] text-white p-2 mt-6 rounded-md">
+        <p className="text-red-500">{errorMessage}</p>
+        <button
+          className="bg-[#E50914] text-white p-2 mt-6 rounded-md"
+          onClick={handleButtonClick}
+        >
           Sign In
         </button>
         <label className="mt-12 text-gray-400">
@@ -61,7 +87,9 @@ const Login = () => {
           </span>
         </label>
       </form>
-      <Footer />
+      <div className="absolute bottom-0 w-full">
+        <Footer />
+      </div>
     </div>
   );
 };

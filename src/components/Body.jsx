@@ -1,16 +1,24 @@
-import Login from "./Login";
-import Browse from "./Browse";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// Components
+import Browse from "./Browse";
+import HomePage from "./HomePage";
 
 const Body = () => {
+  const Login = lazy(() => import("./Login"));
+
   const appRouter = createBrowserRouter([
-    // {
-    //   path: "/",
-    //   element: <HomePage />
-    // },
     {
       path: "/",
-      element: <Login />,
+      element: <HomePage />,
+    },
+    {
+      path: "/login",
+      element: (
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <Login />
+        </Suspense>
+      ),
     },
     {
       path: "/browse",

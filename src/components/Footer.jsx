@@ -1,12 +1,11 @@
 const Footer = () => {
   return (
-    <div className="flex flex-col absolute p-10 pl-48 pr-96 w-full bg-black/70 bottom-0 text-gray-400 text-sm">
+    <div className="flex flex-col p-10 pl-48 pr-96 w-full bg-black/70 text-gray-400 text-sm">
       <div className="mb-4">Questions? Call 000-800-919-1694</div>
       <div className="grid grid-cols-4 gap-4 mb-4">
         <a
           href="https://help.netflix.com/en/node/412"
           target="_blank"
-          without
           rel="noreferrer"
           className="underline"
         >
@@ -15,7 +14,6 @@ const Footer = () => {
         <a
           href="https://help.netflix.com/en/"
           target="_blank"
-          without
           rel="noreferrer"
           className="underline"
         >
@@ -24,7 +22,6 @@ const Footer = () => {
         <a
           href="https://help.netflix.com/legal/termsofuse"
           target="_blank"
-          without
           rel="noreferrer"
           className="underline"
         >
@@ -33,7 +30,6 @@ const Footer = () => {
         <a
           href="https://help.netflix.com/legal/privacy"
           target="_blank"
-          without
           rel="noreferrer"
           className="underline"
         >
@@ -45,7 +41,6 @@ const Footer = () => {
         <a
           href="https://help.netflix.com/legal/corpinfo"
           target="_blank"
-          without
           rel="noreferrer"
           className="underline"
         >
