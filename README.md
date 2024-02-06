@@ -8,6 +8,9 @@
 - Login Page (lazy load)
 - Sign up Form
 - Form Validation
+- Firebase Setup
+- Deploy app to production
+- SignUp user in Firebase
   <br><br>
 
 # Features

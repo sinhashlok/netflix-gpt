@@ -1,10 +1,14 @@
 import { useRef, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 // Components
 import Header from "./Header";
-import Footer from "./Footer";
 // Utils
 import checkValidData from "../utils/validate";
 import { NETFLIX_BACKGROUND } from "../utils/constant";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [isSignInForm, setisSignInForm] = useState(true);
@@ -28,8 +32,41 @@ const Login = () => {
       email.current.value,
       password.current.value
     );
-    if (error) setErrorMessage(error.message);
-    else setErrorMessage(null);
+    if (error !== null) return setErrorMessage(error?.message);
+    setErrorMessage(null);
+    if (isSignInForm) {
+      console.log("Sign In");
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + ", " + errorMessage);
+        });
+    } else {
+      console.log("Sign Up");
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + ", " + errorMessage);
+        });
+    }
   };
 
   return (
@@ -87,9 +124,9 @@ const Login = () => {
           </span>
         </label>
       </form>
-      <div className="absolute bottom-0 w-full">
+      {/* <div className="absolute bottom-0 w-full">
         <Footer />
-      </div>
+      </div> */}
     </div>
   );
 };
