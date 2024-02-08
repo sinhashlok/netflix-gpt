@@ -17,7 +17,7 @@ const HomePage = () => {
         <img
           src={NETFLIX_BACKGROUND}
           alt="netflix-background"
-          className="bg-no-repeat bg-cover w-full h-screen brightness-50 absolute z-0"
+          className="bg-no-repeat bg-cover w-full h-full brightness-50"
         />
       </div>
       <div className="absolute w-full text-white top-[40%]">

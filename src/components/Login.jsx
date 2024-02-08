@@ -1,14 +1,19 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+
 // Components
 import Header from "./Header";
 // Utils
 import checkValidData from "../utils/validate";
 import { NETFLIX_BACKGROUND } from "../utils/constant";
 import { auth } from "../utils/firebase";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setisSignInForm] = useState(true);
@@ -17,6 +22,8 @@ const Login = () => {
   const fullName = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleShowPassword = () => {
     setshowPassword(!showPassword);
@@ -35,15 +42,13 @@ const Login = () => {
     if (error !== null) return setErrorMessage(error?.message);
     setErrorMessage(null);
     if (isSignInForm) {
-      console.log("Sign In");
       signInWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -51,15 +56,23 @@ const Login = () => {
           setErrorMessage(errorCode + ", " + errorMessage);
         });
     } else {
-      console.log("Sign Up");
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
+          updateProfile(auth.currentUser, {
+            displayName: fullName.current?.value,
+            photoURL: "https://avatars.githubusercontent.com/u/77959077?v=4",
+          })
+            .then(() => {
+              dispatch(addUser({ ...auth.currentUser }));
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -72,14 +85,7 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div>
-        <img
-          src={NETFLIX_BACKGROUND}
-          alt="netflix-background"
-          className="bg-no-repeat bg-cover w-full h-screen brightness-50 absolute"
-        />
-      </div>
-      <form className="absolute flex flex-col w-3/12 bg-black/70 p-12 my-36 mx-auto right-0 left-0 rounded-md">
+      <form className="absolute z-10 flex flex-col w-3/12 bg-black/70 p-12 my-36 mx-auto right-0 left-0 rounded-md">
         <label className="text-white text-3xl font-semibold mb-8">
           Sign {isSignInForm ? "In" : "Up"}
         </label>
@@ -114,7 +120,7 @@ const Login = () => {
           className="bg-[#E50914] text-white p-2 mt-6 rounded-md"
           onClick={handleButtonClick}
         >
-          Sign In
+          Sign {isSignInForm ? "In" : "Up"}
         </button>
         <label className="mt-12 text-gray-400">
           {isSignInForm ? "New to Netflix? " : "Already have an Account?"}{" "}
@@ -124,9 +130,13 @@ const Login = () => {
           </span>
         </label>
       </form>
-      {/* <div className="absolute bottom-0 w-full">
-        <Footer />
-      </div> */}
+      <div>
+        <img
+          src={NETFLIX_BACKGROUND}
+          alt="netflix-background"
+          className="bg-no-repeat bg-cover w-full h-full brightness-50"
+        />
+      </div>
     </div>
   );
 };
