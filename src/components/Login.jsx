@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,8 +12,7 @@ import Header from "./Header";
 // Utils
 import checkValidData from "../utils/validate";
 import { NETFLIX_BACKGROUND } from "../utils/constant";
-import { auth } from "../utils/firebase";
-import { addUser } from "../utils/userSlice";
+import { addUser } from "../utils/store/userSlice";
 
 const Login = () => {
   const [isSignInForm, setisSignInForm] = useState(true);
@@ -22,7 +21,6 @@ const Login = () => {
   const fullName = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleShowPassword = () => {
@@ -47,9 +45,7 @@ const Login = () => {
         email.current.value,
         password.current.value
       )
-        .then((userCredential) => {
-          navigate("/browse");
-        })
+        .then((userCredential) => {})
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -68,7 +64,6 @@ const Login = () => {
           })
             .then(() => {
               dispatch(addUser({ ...auth.currentUser }));
-              navigate("/browse");
             })
             .catch((error) => {
               setErrorMessage(error.message);

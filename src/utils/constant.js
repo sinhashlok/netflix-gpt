@@ -12,3 +12,12 @@ export const NETFLIX_CHILDREN_AD =
 
 export const NETFLIX_USER_LOGO =
   "https://occ-0-2164-2186.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABXz4LMjJFidX8MxhZ6qro8PBTjmHbxlaLAbk45W1DXbKsAIOwyHQPiMAuUnF1G24CLi7InJHK4Ge4jkXul1xIW49Dr5S7fc.png?r=e6e";
+
+export const API_OPTIONS = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOWU2ZWU4MDg0ZGMxZGY4YzU2MGUyODgwZDQ2ZTEwNSIsInN1YiI6IjY1YzUyZmI3MWI3MGFlMDE2M2EyMjI2MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qXxs4uMFCT2AwtiNK5WMwP7Hpsh4Inc-o6KFnwRbTHw",
+  },
+};

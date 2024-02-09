@@ -1,11 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 // Utils
-import { NETFLIX_LOGO, NETFLIX_USER_LOGO } from "../utils/constant";
+import { NETFLIX_LOGO } from "../utils/constant";
 import { auth } from "../utils/firebase";
-import { removeUser } from "../utils/userSlice";
+import { addUser, removeUser } from "../utils/store/userSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
@@ -14,22 +15,41 @@ const Header = () => {
   const [show, handleShow] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName, photoURL } = user;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const handleHover = () => {
     handleShow(!show);
   };
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => {
-        dispatch(removeUser());
-        navigate("/login");
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
   };
 
   return (
-    <div className="absolute pl-48 w-full pt-6 bg-gradient-to-b from-black z-10 flex justify-between align-middle">
+    <div className="absolute pl-24 w-full pt-6 bg-gradient-to-b from-black z-10 flex justify-between align-middle">
       <Link to="/">
         <img src={NETFLIX_LOGO} alt="netlfix-logo" className="w-[150px]" />
       </Link>
@@ -48,23 +68,23 @@ const Header = () => {
           </div>
         )}
         {path === "/browse" && (
-          <div className="z-10 ml-auto right-0 mr-48 flex flex-col items-end">
+          <div className="z-10 ml-auto right-0 mr-24 flex flex-col items-end">
             <div className="flex items-center">
               <div className="flex items-end">
-                <div className="mr-2 text-sm">{user?.displayName}</div>
+                <div className="mr-2 text-sm text-white">
+                  {user?.displayName}
+                </div>
                 <img
                   src={user?.photoURL}
                   alt="user-img"
                   className="rounded-md w-8 mr-2"
                 />
               </div>
-              {/* <img
-                src={NETFLIX_USER_LOGO}
-                alt="netflix-user-logo"
-                className="rounded-md w-8 mr-2"
-              /> */}
-              <div className="text-sm cursor-pointer" onMouseDown={handleHover}>
-                ⬇️
+              <div
+                className="text-sm cursor-pointer text-white"
+                onMouseDown={handleHover}
+              >
+                {show ? <TriangleDownIcon /> : <TriangleUpIcon />}
               </div>
             </div>
             <div
