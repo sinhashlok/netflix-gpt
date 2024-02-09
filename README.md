@@ -27,7 +27,9 @@
 - Planning for MainContainer & SecondaryContainer
 - Fetch data for Trailer Video & updated store with Trailer data
 - Embedded Youtube video and make it autoplay & mute
-<br><br>
+- SecondaryComponent
+- Movie List & Movie Card
+  <br><br>
 
 # Features
 

@@ -4,9 +4,10 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 // Utils
-import { NETFLIX_LOGO } from "../utils/constant";
+import { NETFLIX_LOGO, NETFLIX_USER_LOGO } from "../utils/constant";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/store/userSlice";
+import { removeData } from "../utils/store/movieSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
@@ -30,6 +31,7 @@ const Header = () => {
         navigate("/browse");
       } else {
         dispatch(removeUser());
+        dispatch(removeData());
         navigate("/login");
       }
     });
@@ -71,11 +73,8 @@ const Header = () => {
           <div className="z-10 ml-auto right-0 mr-24 flex flex-col items-end">
             <div className="flex items-center">
               <div className="flex items-end">
-                <div className="mr-2 text-sm text-white">
-                  {user?.displayName}
-                </div>
                 <img
-                  src={user?.photoURL}
+                  src={NETFLIX_USER_LOGO}
                   alt="user-img"
                   className="rounded-md w-8 mr-2"
                 />

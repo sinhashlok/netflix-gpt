@@ -60,7 +60,6 @@ const Login = () => {
         .then((userCredential) => {
           updateProfile(auth.currentUser, {
             displayName: fullName.current?.value,
-            photoURL: "https://avatars.githubusercontent.com/u/77959077?v=4",
           })
             .then(() => {
               dispatch(addUser({ ...auth.currentUser }));
