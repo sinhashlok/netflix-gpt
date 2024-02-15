@@ -29,6 +29,7 @@
 - Embedded Youtube video and make it autoplay & mute
 - SecondaryComponent
 - Movie List & Movie Card
+- Multi-language Feature in App
   <br><br>
 
 # Features

@@ -1,6 +1,10 @@
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import { useSelector } from "react-redux";
+// utils
+import { lang } from "../utils/languageConstants";
 
 const VideoTitle = ({ title, overview }) => {
+  const langKey = useSelector((state) => state.config.lang);
   return (
     <div className="absolute pt-96 px-24 aspect-video w-screen bg-gradient-to-r from-black">
       <h1 className="text-6xl font-bold text-white">{title}</h1>
@@ -8,13 +12,13 @@ const VideoTitle = ({ title, overview }) => {
       <div className="flex">
         <button className="flex items-center bg-white text-lg align-middle px-6 py-1 rounded-md mr-4 hover:bg-white/70 cursor-pointer">
           <div className="text-4xl pr-2">▶️</div>
-          <div>Play</div>
+          <div>{lang[langKey].playButtonMainContainer}</div>
         </button>
         <button className="flex items-center bg-gray-500 text-white text-lg align-middle px-6 py-1 rounded-md hover:bg-gray-500/70 cursor-pointer">
           <div className="mr-4 pb-2 text-3xl">
             <InfoOutlineIcon />
           </div>
-          <div>More info</div>
+          <div>{lang[langKey].moreInfoMainContainer}</div>
         </button>
       </div>
     </div>
